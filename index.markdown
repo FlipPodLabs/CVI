@@ -63,7 +63,7 @@ layout: default
                     }
                 }),
                 signal: controller.signal,
-                timeout: 15000 // 15-second timeout
+                timeout: 30000 // 30-second timeout
             });
 
             // Handle API-specific errors
