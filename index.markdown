@@ -57,7 +57,7 @@ layout: default
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'x-api-key': '0fadf8d2ab914c91b1b0719eff16ea20' // Replace with your API key
+                    'x-api-key': '9836007c1c7e42069111b82b9fe6a6e4' // Replace with your API key
                 },
                 body: JSON.stringify({
                     persona_id: 'p1fcd1b4f914' // Replace with your persona ID
