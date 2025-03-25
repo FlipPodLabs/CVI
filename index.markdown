@@ -49,7 +49,7 @@ layout: default
     
     const executeCall = async () => {
         try {
-            const response = await fetch('https://api.tavus.io/v1/conversations', {
+            const response = await fetch('https://api.tavus.io/v2/conversations', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
