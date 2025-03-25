@@ -43,60 +43,77 @@ layout: default
 
     <script>
     document.getElementById('startChat').addEventListener('click', async () => {
-        const loader = document.querySelector('.loader');
-        const errorMessage = document.querySelector('.error-message');
-        
+    const MAX_RETRIES = 3;
+    let retryCount = 0;
+    const controller = new AbortController();
+    
+    const executeCall = async () => {
         try {
-            loader.style.display = 'block';
-            errorMessage.style.display = 'none';
-
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 8000);
-
             const response = await fetch('https://api.tavus.io/v1/conversations', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'x-api-key': '9836007c1c7e42069111b82b9fe6a6e4' // Replace with your API key
+                    'x-api-key': '9836007c1c7e42069111b82b9fe6a6e4' // Your API key
                 },
                 body: JSON.stringify({
-                    persona_id: 'p1fcd1b4f914' // Replace with your persona ID
+                    persona_id: 'p1fcd1b4f914', // Your persona ID
+                    conversational_context: "Default conversation starter",
+                    properties: {
+                        enable_recording: true
+                    }
                 }),
-                signal: controller.signal
+                signal: controller.signal,
+                timeout: 15000 // 15-second timeout
             });
 
-            clearTimeout(timeoutId);
-
+            // Handle API-specific errors
             if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`API Error (${response.status}): ${errorText}`);
+                const errorData = await response.json();
+                throw new Error(`Tavus API Error: ${errorData.error?.message || 'Unknown API error'}`);
             }
 
             const data = await response.json();
-
-            if (data.conversation_url) {
-                const iframe = document.createElement('iframe');
-                iframe.src = data.conversation_url;
-                iframe.style = 'width:100%;height:600px;border:none;';
-                document.getElementById('chatContainer').appendChild(iframe);
-                document.getElementById('chatContainer').style.display = 'block';
-            } else {
-                throw new Error('No conversation URL in response');
+            
+            // Validate response format
+            if (!data.conversation_url) {
+                throw new Error('Invalid API response format');
             }
+
+            // Success handling
+            const iframe = document.createElement('iframe');
+            iframe.src = data.conversation_url;
+            iframe.style = 'width:100%;height:600px;border:none;';
+            document.getElementById('chatContainer').appendChild(iframe);
+            document.getElementById('chatContainer').style.display = 'block';
+
         } catch (error) {
-            console.error('Error:', error);
-            errorMessage.textContent = `Error: ${error.message}`;
-            errorMessage.style.display = 'block';
-
-            if (error.name === 'AbortError') {
-                errorMessage.textContent = 'Request timed out. Please try again.';
-            } else if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
-                errorMessage.textContent = 'Network error. Please check your internet connection.';
+            // Network/Timeout Errors
+            if (error.name === 'AbortError' || error.message.includes('Failed to fetch')) {
+                if (retryCount < MAX_RETRIES) {
+                    retryCount++;
+                    await new Promise(resolve => setTimeout(resolve, 2000 * retryCount));
+                    return executeCall();
+                }
+                throw new Error('Connection failed after 3 attempts. Check network or try later.');
             }
-        } finally {
-            loader.style.display = 'none';
+            
+            // API Error Structure from Tavus docs
+            if (error.message.includes('Tavus API Error')) {
+                console.error('API Failure:', error);
+                throw new Error('Service unavailable. Please contact support.');
+            }
+            
+            // General error fallback
+            throw error;
         }
-    });
-    </script>
-</body>
-</html>
+    };
+
+    try {
+        await executeCall();
+    } catch (error) {
+        console.error('Final Error:', error);
+        alert(error.message);
+    } finally {
+        controller.abort(); // Cleanup
+    }
+});
