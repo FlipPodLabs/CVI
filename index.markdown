@@ -59,9 +59,9 @@ layout: default
                     'x-api-key': '0fadf8d2ab914c91b1b0719eff16ea20' // Replace with your API key
                 },
                 body: JSON.stringify({
-                    persona_id: 'r9602e00bd30' // Replace with your persona ID
+                    persona_id: 'p1fcd1b4f914' // Replace with your persona ID
                 }),
-                timeout: 10000 // 10-second timeout
+                timeout: 20000 // 10-second timeout
             });
 
             // Handle HTTP errors
