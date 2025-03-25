@@ -8,8 +8,9 @@ layout: default
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tavus AI Chat</title>
+    <link rel="stylesheet" href="{{ '/assets/main.css' | relative_url }}">
+    <link rel="icon" href="{{ '/assets/images/favicon.ico' | relative_url }}">
     <style>
-        /* Add loading spinner CSS */
         .loader {
             border: 4px solid #f3f3f3;
             border-top: 4px solid #3498db;
@@ -20,13 +21,12 @@ layout: default
             margin: 20px auto;
             display: none;
         }
-        
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-        /* Error message styling */
         .error-message {
             color: red;
             margin: 10px 0;
@@ -47,11 +47,12 @@ layout: default
         const errorMessage = document.querySelector('.error-message');
         
         try {
-            // Show loading spinner
             loader.style.display = 'block';
             errorMessage.style.display = 'none';
-            
-            // API Call Configuration
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 8000);
+
             const response = await fetch('https://api.tavus.io/v1/conversations', {
                 method: 'POST',
                 headers: {
@@ -61,18 +62,17 @@ layout: default
                 body: JSON.stringify({
                     persona_id: 'p1fcd1b4f914' // Replace with your persona ID
                 }),
-                timeout: 20000 // 10-second timeout
+                signal: controller.signal
             });
 
-            // Handle HTTP errors
+            clearTimeout(timeoutId);
+
             if (!response.ok) {
                 const errorText = await response.text();
                 throw new Error(`API Error (${response.status}): ${errorText}`);
             }
 
-            // Process successful response
             const data = await response.json();
-            console.log('API Response:', data);
 
             if (data.conversation_url) {
                 const iframe = document.createElement('iframe');
@@ -84,16 +84,16 @@ layout: default
                 throw new Error('No conversation URL in response');
             }
         } catch (error) {
-            console.error('Error Details:', error);
+            console.error('Error:', error);
             errorMessage.textContent = `Error: ${error.message}`;
             errorMessage.style.display = 'block';
-            
-            // Handle specific error types
-            if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
-                errorMessage.textContent = 'Network error: Please check your internet connection';
+
+            if (error.name === 'AbortError') {
+                errorMessage.textContent = 'Request timed out. Please try again.';
+            } else if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+                errorMessage.textContent = 'Network error. Please check your internet connection.';
             }
         } finally {
-            // Hide loading spinner
             loader.style.display = 'none';
         }
     });
