@@ -12,13 +12,33 @@ layout: default
     <link rel="icon" href="{{ '/assets/images/favicon.ico' | relative_url }}">
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'self';
-        script-src 'self' 'unsafe-eval' 'sha256-4ZPsBzAj9gP0zFvccWBCEa3czx2vtHZiNMmXaNl8CTs=' https://*.tavus.io https://*.filesusr.com;
-        connect-src 'self' https://api.tavus.io;
-        frame-src https://cvi.tavus.io;
+        script-src 'self' 'unsafe-eval' https://*.tavusapi.com https://*.filesusr.com;
+        connect-src 'self' https://tavusapi.com;
+        frame-src https://cvi.tavusapi.com;
         style-src 'self' 'unsafe-inline';
     ">
     <style>
-        /* Existing styles remain unchanged */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            color: red;
+            margin: 10px 0;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -36,7 +56,7 @@ layout: default
         
         const executeCall = async () => {
             try {
-                const response = await fetch('https://api.tavus.io/v2/conversations', {
+                const response = await fetch('https://tavusapi.com/v2/conversations', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
