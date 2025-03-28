@@ -37,12 +37,14 @@
         }
 
         #chatContainer {
-            position: fixed; /* Make it full-screen */
-            top: 0;
-            left: 0;
-            width: 100vw; /* Full width */
-            height: 100vh; /* Full height */
-            border-radius: 0; /* Remove rounded corners */
+            position: fixed; /* Center the chat screen */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Adjust for centering */
+            width: 80%; /* Larger width */
+            height: 70%; /* Larger height */
+            border-radius: 10px; /* Rounded corners for a clean look */
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
             overflow: hidden; /* Ensure clean edges */
         }
     </style>
@@ -83,7 +85,7 @@
                   iframeStyleOverrides: {
                       width: "100%",
                       height: "100%",
-                      borderRadius: "0"
+                      borderRadius: "10px"
                   }
               });
               frame.join({ url: data.conversation_url });
@@ -92,10 +94,6 @@
               console.error('Error:', error);
               alert('Failed to start conversation. Please try again.');
           }
-      });
-    </script>
-</body>
-</html>
       });
     </script>
 </body>
