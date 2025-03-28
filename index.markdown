@@ -13,35 +13,12 @@
         frame-src https://cvi.tavusapi.com;
         style-src 'self' 'unsafe-inline';
     ">
-    <style>
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-            display: none;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .error-message {
-            color: red;
-            margin: 10px 0;
-            display: none;
-        }
-    </style>
 </head>
 <body>
     <h1>Welcome to Tavus AI Chat</h1>
     <div class="loader"></div>
     <div class="error-message"></div>
-    <div id="chatContainer" style="display:none;"></div>
+    <div id="chatContainer"></div>
 
     <!-- Include Daily.js for frame creation -->
     <script src="https://unpkg.com/@daily-co/daily-js"></script>
@@ -52,23 +29,22 @@
                   method: 'POST',
                   headers: {
                       'Content-Type': 'application/json',
-                      'x-api-key': '9836007c1c7e42069111b82b9fe6a6e4' // Replace with your API key
+                      'x-api-key': '9836007c1c7e42069111b82b9fe6a6e4'
                   },
                   body: JSON.stringify({
-                      persona_id: 'p1fcd1b4f914', // Replace with your Persona ID
+                      persona_id: 'p1fcd1b4f914',
                       conversational_context: "Default conversation starter",
-                      properties: {
-                          enable_recording: true
-                      }
+                      properties: { enable_recording: true }
                   })
               });
 
               const data = await response.json();
+              console.log("API Response:", data);
+
               if (!data.conversation_url) {
                   throw new Error('Invalid API response format');
               }
 
-              // Create and join the room using Daily.js
               const frame = window.Daily.createFrame();
               frame.join({ url: data.conversation_url });
               document.getElementById('chatContainer').appendChild(frame);
