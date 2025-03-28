@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>More Ideas</title>
+    <title>Tt</title>
     <link rel="stylesheet" href="{{ '/assets/main.css' | relative_url }}">
     <link rel="icon" href="{{ '/assets/images/favicon.ico' | relative_url }}">
     <meta http-equiv="Content-Security-Policy" content="
@@ -82,7 +82,10 @@
 
               // Create and join the room using Daily.js
               const frame = window.Daily.createFrame({
-                  iframeStyleOverrides: {
+                  iframeStyle: { // Correct property name
+                      position: "fixed",
+                      top: "0",
+                      left: "0",
                       width: "100%",
                       height: "100%",
                       borderRadius: "10px"
