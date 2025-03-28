@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tavus AI Chat</title>
+    <title>More Ideas</title>
     <link rel="stylesheet" href="{{ '/assets/main.css' | relative_url }}">
     <link rel="icon" href="{{ '/assets/images/favicon.ico' | relative_url }}">
     <meta http-equiv="Content-Security-Policy" content="
@@ -13,6 +13,41 @@
         frame-src https://cvi.tavusapi.com;
         style-src 'self' 'unsafe-inline';
     ">
+    <style>
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: auto;
+            display: none; /* Hidden by default */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        #chatContainer {
+            position: fixed; /* Center the chat screen */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Adjust for centering */
+            width: 80%; /* Larger width */
+            height: 70%; /* Larger height */
+            border-radius: 10px; /* Rounded corners for a clean look */
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+            overflow: hidden; /* Ensure clean edges */
+        }
+    </style>
 </head>
 <body>
     <h1>Welcome to Tavus AI Chat</h1>
@@ -29,10 +64,10 @@
                   method: 'POST',
                   headers: {
                       'Content-Type': 'application/json',
-                      'x-api-key': '9836007c1c7e42069111b82b9fe6a6e4'
+                      'x-api-key': '9836007c1c7e42069111b82b9fe6a6e4' // Replace with your API key
                   },
                   body: JSON.stringify({
-                      persona_id: 'p1fcd1b4f914',
+                      persona_id: 'p1fcd1b4f914', // Replace with your Persona ID
                       conversational_context: "Default conversation starter",
                       properties: { enable_recording: true }
                   })
@@ -45,10 +80,16 @@
                   throw new Error('Invalid API response format');
               }
 
-              const frame = window.Daily.createFrame();
+              // Create and join the room using Daily.js
+              const frame = window.Daily.createFrame({
+                  iframeStyleOverrides: {
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: "10px"
+                  }
+              });
               frame.join({ url: data.conversation_url });
               document.getElementById('chatContainer').appendChild(frame);
-              document.getElementById('chatContainer').style.display = 'block';
           } catch (error) {
               console.error('Error:', error);
               alert('Failed to start conversation. Please try again.');
