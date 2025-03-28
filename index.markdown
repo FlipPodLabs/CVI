@@ -21,8 +21,8 @@
             width: 30px;
             height: 30px;
             animation: spin 1s linear infinite;
-            margin: auto;
-            display: none; /* Hidden by default */
+            margin: 20px auto;
+            display: none;
         }
 
         @keyframes spin {
@@ -32,20 +32,8 @@
 
         .error-message {
             color: red;
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        #chatContainer {
-            position: fixed; /* Center the chat screen */
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%); /* Adjust for centering */
-            width: 80%; /* Larger width */
-            height: 70%; /* Larger height */
-            border-radius: 10px; /* Rounded corners for a clean look */
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
-            overflow: hidden; /* Ensure clean edges */
+            margin: 10px 0;
+            display: none;
         }
     </style>
 </head>
@@ -53,7 +41,7 @@
     <h1>Welcome to Tavus AI Chat</h1>
     <div class="loader"></div>
     <div class="error-message"></div>
-    <div id="chatContainer"></div>
+    <div id="chatContainer" style="display:none;"></div>
 
     <!-- Include Daily.js for frame creation -->
     <script src="https://unpkg.com/@daily-co/daily-js"></script>
@@ -64,10 +52,10 @@
                   method: 'POST',
                   headers: {
                       'Content-Type': 'application/json',
-                      'x-api-key': '9836007c1c7e42069111b82b9fe6a6e4' // Replace with your API key
+                      'x-api-key': 'YOUR_API_KEY' // Replace with your API key
                   },
                   body: JSON.stringify({
-                      persona_id: 'p1fcd1b4f914', // Replace with your Persona ID
+                      persona_id: 'YOUR_PERSONA_ID', // Replace with your Persona ID
                       conversational_context: "Default conversation starter",
                       properties: {
                           enable_recording: true
@@ -81,15 +69,10 @@
               }
 
               // Create and join the room using Daily.js
-              const frame = window.Daily.createFrame({
-                  iframeStyleOverrides: {
-                      width: "100%",
-                      height: "100%",
-                      borderRadius: "10px"
-                  }
-              });
+              const frame = window.Daily.createFrame();
               frame.join({ url: data.conversation_url });
               document.getElementById('chatContainer').appendChild(frame);
+              document.getElementById('chatContainer').style.display = 'block';
           } catch (error) {
               console.error('Error:', error);
               alert('Failed to start conversation. Please try again.');
