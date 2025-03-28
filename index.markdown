@@ -1,9 +1,9 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>More Ideas</title>
+    <title>Tavus AI Chat</title>
     <link rel="stylesheet" href="{{ '/assets/main.css' | relative_url }}">
     <link rel="icon" href="{{ '/assets/images/favicon.ico' | relative_url }}">
     <meta http-equiv="Content-Security-Policy" content="
@@ -14,35 +14,6 @@
         style-src 'self' 'unsafe-inline';
     ">
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #101010; /* Futuristic dark background */
-            color: #ffffff; /* Clean white text */
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-top: 20px;
-            color: #00d1ff; /* Bright blue accent for futuristic feel */
-        }
-
-        .chat-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh; /* Full-screen layout */
-        }
-
-        #chatContainer {
-            width: 90%; /* Large popup size */
-            height: 80%; /* Large popup size */
-            border-radius: 10px;
-            overflow: hidden; /* Clean edges */
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Subtle shadow */
-        }
         .loader {
             border: 4px solid #f3f3f3;
             border-top: 4px solid #3498db;
@@ -50,8 +21,8 @@
             width: 30px;
             height: 30px;
             animation: spin 1s linear infinite;
-            margin: 20px auto;
-            display: none;
+            margin: auto;
+            display: none; /* Hidden by default */
         }
 
         @keyframes spin {
@@ -61,16 +32,26 @@
 
         .error-message {
             color: red;
-            margin: 10px 0;
-            display: none;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        #chatContainer {
+            position: fixed; /* Make it full-screen */
+            top: 0;
+            left: 0;
+            width: 100vw; /* Full width */
+            height: 100vh; /* Full height */
+            border-radius: 0; /* Remove rounded corners */
+            overflow: hidden; /* Ensure clean edges */
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to CJI</h1>
+    <h1>Welcome to Tavus AI Chat</h1>
     <div class="loader"></div>
     <div class="error-message"></div>
-    <div id="chatContainer" style="display:none;"></div>
+    <div id="chatContainer"></div>
 
     <!-- Include Daily.js for frame creation -->
     <script src="https://unpkg.com/@daily-co/daily-js"></script>
@@ -98,14 +79,23 @@
               }
 
               // Create and join the room using Daily.js
-              const frame = window.Daily.createFrame();
+              const frame = window.Daily.createFrame({
+                  iframeStyleOverrides: {
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: "0"
+                  }
+              });
               frame.join({ url: data.conversation_url });
               document.getElementById('chatContainer').appendChild(frame);
-              document.getElementById('chatContainer').style.display = 'block';
           } catch (error) {
               console.error('Error:', error);
               alert('Failed to start conversation. Please try again.');
           }
+      });
+    </script>
+</body>
+</html>
       });
     </script>
 </body>
