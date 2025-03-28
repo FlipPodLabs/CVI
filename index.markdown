@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,6 +14,35 @@
         style-src 'self' 'unsafe-inline';
     ">
     <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #101010; /* Futuristic dark background */
+            color: #ffffff; /* Clean white text */
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-top: 20px;
+            color: #00d1ff; /* Bright blue accent for futuristic feel */
+        }
+
+        .chat-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full-screen layout */
+        }
+
+        #chatContainer {
+            width: 90%; /* Large popup size */
+            height: 80%; /* Large popup size */
+            border-radius: 10px;
+            overflow: hidden; /* Clean edges */
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+        }
         .loader {
             border: 4px solid #f3f3f3;
             border-top: 4px solid #3498db;
