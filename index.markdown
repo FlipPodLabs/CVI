@@ -67,7 +67,7 @@
                       'x-api-key': '9836007c1c7e42069111b82b9fe6a6e4' // Replace with your API key
                   },
                   body: JSON.stringify({
-                      persona_id: 'p1fcd1b4f914', // Replace with your Persona ID
+                      persona_id: 'p87c9456e1a9', // Replace with your Persona ID
                       conversational_context: "Default conversation starter",
                       properties: { enable_recording: true }
                   })
