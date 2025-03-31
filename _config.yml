@@ -1,5 +1,5 @@
-title: "Tavus AI Chat"
-description: "A simple site to integrate Tavus AI Chat."
+title: "CJI Chat"
+description: "A simple site to integrate CJI."
 baseurl: "/CVI" # Match your GitHub repository name
 url: "https://flippodlabs.github.io" # Your GitHub Pages URL
 theme: minima
