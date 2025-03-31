@@ -50,7 +50,7 @@
     </style>
 </head>
 <body>
-    <h1>Welcome to Tavus AI Chat</h1>
+    <h1>Welcome to CJI Chat</h1>
     <div class="loader"></div>
     <div class="error-message"></div>
     <div id="chatContainer"></div>
